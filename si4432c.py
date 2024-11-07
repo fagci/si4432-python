@@ -414,19 +414,3 @@ txaethr_mask = 0x1F
 Si4432_RX_FIFO_CONTROL = 0x7e
 txafthr_mask = 0x1F       
 Si4432_FIFO_ACCESS = 0x7f
-
-
-
-
-
-SHUTDOWN = 1
-IDLE = 2
-STANDBY = 3
-SLEEP = 4
-SENSOR = 5
-READY = 6
-TUNE = 7
-XMIT_DIRECT = 8
-XMIT_PACKET = 9
-RECV_DIRECT = 10
-RECV_PACKET = 11
