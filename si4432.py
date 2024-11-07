@@ -6,7 +6,8 @@ from si4432c import *
 class Si4432(spidev.SpiDev):
     def __init__(self,a,b):
         super().__init__(a,b)
-        self.max_speed_hz = 4000000
+        self.max_speed_hz = self.speed = 16000000
+        # self.max_speed_hz = 4000000
 
     def enable_rx(self):
         self.reg_write(Si4432_OPERATING_MODE1, rxon)
@@ -18,7 +19,7 @@ class Si4432(spidev.SpiDev):
         self.reg_write(Si4432_OPERATING_MODE1, 0x00)
 
     def rssi(self):
-        self.reg_read(Si4432_RSSI)
+        return self.reg_read(Si4432_RSSI)
 
     def set_power(self, p):
         self.reg_write(Si4432_TX_POWER, p)
@@ -65,4 +66,4 @@ class Si4432(spidev.SpiDev):
         self.reg_write(Si4432_FREQUENCY_BAND, Freq_Band)
         self.reg_write(Si4432_NOMINAL_CARRIER_FREQUENCY1, (Carrier>>8) & 0xFF)
         self.reg_write(Si4432_NOMINAL_CARRIER_FREQUENCY0, Carrier & 0xFF)
-        sleep(0.002)
+        # sleep(0.002)
