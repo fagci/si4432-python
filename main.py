@@ -40,7 +40,7 @@ with Si4432(0,0) as si:
 
     si.configure_gpio()
 
-    si.reg_write(0x1C, (3<<4) | 6) # BW
+    si.reg_write(0x1C, (2<<4) | 4) # BW
 
     si.set_frequency(434000000)
     si.enable_rx()
@@ -62,24 +62,24 @@ with Si4432(0,0) as si:
 
     class Handler(SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs) -> None:
-            self.img = Image.new('RGB', (320, 240), color='white')
+            self.img = Image.new('RGB', (320, 240), color='black')
             self.imgDraw = ImageDraw.Draw(self.img)
             self.buf = io.BytesIO()
             super().__init__(*args, **kwargs)
         
         def renderFrame(self):
             self.buf.seek(0)
-            self.img.save(self.buf, 'jpeg', quality=80)
+            self.img.save(self.buf, 'jpeg', quality=92)
             return self.buf.getvalue()
 
         def getFrame(self):
             # self.imgDraw.rectangle([0,0,320,240], (255,255,255))
+            self.img = ImageChops.offset(self.img, 0, 1)
+            self.imgDraw = ImageDraw.Draw(self.img)
             for x in range(80):
                 rssi = rssiHistory[x]
-                color = int(convert_domain(rssi, 30, 120, 0, len(PAL)-1))
-                self.imgDraw.rectangle([x *4,238,x*4+3, 240], PAL[color])
-            self.img = ImageChops.offset(self.img, 0, -1)
-            self.imgDraw = ImageDraw.Draw(self.img)
+                color = int(convert_domain(rssi, 15, 120, 0, len(PAL)-1))
+                self.imgDraw.rectangle([x *4,0,x*4+3, 0], PAL[color])
             return self.renderFrame()
 
 
